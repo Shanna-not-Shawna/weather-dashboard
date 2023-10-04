@@ -1,7 +1,4 @@
-.col-4 {
-    background-color: wheat;
-}
-
-.col-8 {
-    background-color: navy;
+.hero {
+    background-color: darkblue;
+    text-align: center;
 }

@@ -1,11 +1,152 @@
-var APIkey = "b539fdcf084f125f2fbdb2489d4ebf94";
-var searchInputVal = "Dallas";
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInputVal + "&appid=" + APIkey + "&units=imperial";
+var APIKey = "ab539fdcf084f125f2fbdb2489d4ebf94";
 var currentDay = dayjs().format('MM/DD/YYYY');
+var userCity = document.querySelector("#search-form");
+var searchHistory = document.querySelector("#search-history")
+var currentWeatherContainer = document.querySelector("#current-container");
+var forecastContainer = $("#forecastContainer");
 
 
-fetch(queryURL)
-  .then(response => response.json())
-  .then(data => console.log(data));
+// listens for click and checks for input
+function formSubmitHandler(event) {
+    event.preventDefault();
 
-  // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
+    var cityInput = userCity.elements.city.value.trim();
+
+    if (cityInput) {
+        getCurrentWeather(cityInput);
+        storeFormerSearches(cityInput);
+
+    } else {
+        alert("Please enter a valid city name");
+    }
+}
+
+// fetch current weather data
+function getCurrentWeather(cityInput) {
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userCity + "&appid=" + APIKey + "&units=imperial";
+    fetch(queryURL)
+        .then(function (response) {
+            if (response.ok) {
+                return response.JSON();
+            } else {
+                alert("City not found");
+            }
+        })
+        .then(function (todaysWeather) {
+            console.log(todaysWeather);
+            displayCurrentWeather(todaysWeather);
+
+            
+            // Parse latitude and longitude from todaysWeather
+            var lat = todaysWeather.coord.lat;
+            var lon = todaysWeather.coord.lon;
+            // console.log(lat);
+            // console.log(lon);
+
+            getFiveDayWeather(lat, lon);
+        })
+        .catch(function (error) {
+            console.error(error.message);
+        });
+}
+
+//fetch 5 day forecast for entered city
+function getFiveDayWeather(lat, lon) {
+    var fiveDayWeatherURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&" + "lon=" + lon + "&appid=" + APIKey + "&units=imperial";
+
+    fetch(fiveDayWeatherURL)
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            }
+        })
+        .then(function (fiveDayWeatherData) {
+            console.log(fiveDayWeatherData);
+
+
+            var thisDay = dayjs(currentDay);
+            forecastContainer[0].innerHTML = "";
+
+            for (let i = 0; i < fiveDayWeatherData.list.length; i++) {
+                const dayObj = fiveDayWeatherData.list[i];
+
+                if (dayjs(dayObj.dt_txt).isSame(thisDay.add(1, "day"))) {
+                    console.log("found next day");
+                    displayFiveDayWeather(dayObj);
+                    thisDay = dayjs(dayObj.dt_txt);
+                }
+            }
+        })
+}
+
+function displayCurrentWeather(todaysWeather) {
+
+    var currentCityDate = document.createElement("h3");
+    var currentTemp = document.createElement("p");
+    var currentWind = document.createElement("p");
+    var currentHumidity = document.createElement("p");
+    currentWeatherContainer.textContent = "";
+    currentCityDate.textContent = todaysWeather.name + "  (" + currentDay + ")"
+    currentTemp.textContent = "Temp: " + todaysWeather.main.temp + " °F";
+    currentWind.textContent = "Wind: " + todaysWeather.wind.speed + " MPH";
+    currentHumidity.textContent = "Humidity: " + todaysWeather.main.humidity + "%";
+    currentWeatherContainer.append(currentCityDate);
+    currentWeatherContainer.append(currentTemp);
+    currentWeatherContainer.append(currentWind);
+    currentWeatherContainer.append(currentHumidity);    
+}
+
+function displayFiveDayWeather(dayObj) {
+
+    var cardHTML = $(`
+    <div class="col">
+        <div class="card">
+        <img src="https://openweathermap.org/img/wn/${dayObj.weather[0].icon}@2x.png" class="card-img-top" alt="${dayObj.weather[0].description}">
+        <div class="card-body">
+            <h5 class="card-title">${dayjs(dayObj.dt_txt).format("MM/DD/YYYY")}</h5>
+            <ul>
+            <li>Temp: ${dayObj.main.temp} °F</li>
+            <li>Wind: ${dayObj.wind.speed} MPH</li>
+            <li>Humidity: ${dayObj.main.humidity}%</li>
+            </ul>
+        </div>
+        </div>
+    </div>
+    `);
+
+    forecastContainer.append(cardHTML);
+}
+
+function storeFormerSearches(cityInput) {
+    var cityHistory = JSON.parse(localStorage.getItem("cityHist")) || [];
+    console.log(cityHistory);
+    cityHistory.push(cityInput);
+    localStorage.setItem("cityHist", JSON.stringify(cityHistory));
+    console.log(cityHistory);
+    displayCityHist(cityHistory);
+}
+
+function displayCityHist(cityHistory) {
+    searchHistory.innerHTML = "";
+    console.log(cityHistory);
+    for (let i = 0; i < cityHistory.length; i++) {
+        var cityList = cityHistory[i];
+        var cityButton = document.createElement("button");
+        cityButton.textContent = cityList;
+
+        cityButton.addEventListener("click", function () {
+        });
+        searchHistory.appendChild(cityButton);
+    }
+}
+
+function displayHistoryCity (event) {
+    var clickedCity = event.target.textContent;
+    
+    if (event.target.textContent = clickedCity) {
+        getCurrentWeather(clickedCity);
+    }
+}
+
+userCity.addEventListener('submit', formSubmitHandler);
+searchHistory.addEventListener('click', displayHistoryCity)
