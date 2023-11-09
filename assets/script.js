@@ -1,8 +1,8 @@
-var APIKey = "ab539fdcf084f125f2fbdb2489d4ebf94";
-var currentDay = dayjs().format('MM/DD/YYYY');
+const APIKey = "6acaa70b8159eb647ca2c6424a15fd8f";
+var currentDay = dayjs().format("MM/DD/YYYY");
 var userCity = document.querySelector("#search-form");
 var searchHistory = document.querySelector("#search-history")
-var currentWeatherContainer = document.querySelector("#current-container");
+var currentWeatherContainer = document.querySelector("#currentWeatherContainer");
 var forecastContainer = $("#forecastContainer");
 
 
@@ -23,11 +23,12 @@ function formSubmitHandler(event) {
 
 // fetch current weather data
 function getCurrentWeather(cityInput) {
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userCity + "&appid=" + APIKey + "&units=imperial";
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=" + APIKey + "&units=imperial";
+    // var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=6acaa70b8159eb647ca2c6424a15fd8f";
     fetch(queryURL)
         .then(function (response) {
             if (response.ok) {
-                return response.JSON();
+                return response.json();
             } else {
                 alert("City not found");
             }
@@ -85,18 +86,21 @@ function displayCurrentWeather(todaysWeather) {
     var currentTemp = document.createElement("p");
     var currentWind = document.createElement("p");
     var currentHumidity = document.createElement("p");
+    let currentIcon = document.createElement("img");
     currentWeatherContainer.textContent = "";
-    currentCityDate.textContent = todaysWeather.name + "  (" + currentDay + ")"
+    currentCityDate.textContent = todaysWeather.name + "  (" + currentDay + ")";
+    currentIcon.src = "https://openweathermap.org/img/wn/" + todaysWeather.weather[0].icon + "@2x.png";
+    currentCityDate.append(currentIcon);
     currentTemp.textContent = "Temp: " + todaysWeather.main.temp + " °F";
     currentWind.textContent = "Wind: " + todaysWeather.wind.speed + " MPH";
     currentHumidity.textContent = "Humidity: " + todaysWeather.main.humidity + "%";
     currentWeatherContainer.append(currentCityDate);
     currentWeatherContainer.append(currentTemp);
     currentWeatherContainer.append(currentWind);
-    currentWeatherContainer.append(currentHumidity);    
+    currentWeatherContainer.append(currentHumidity);
 }
 
-function displayFiveDayWeather(dayObj) {
+function displayFiveDayWeather(dayObj) {    
 
     var cardHTML = $(`
     <div class="col">
@@ -127,7 +131,7 @@ function storeFormerSearches(cityInput) {
 }
 
 function displayCityHist(cityHistory) {
-    searchHistory.innerHTML = "";
+    // searchHistory.innerHTML = "";
     console.log(cityHistory);
     for (let i = 0; i < cityHistory.length; i++) {
         var cityList = cityHistory[i];
