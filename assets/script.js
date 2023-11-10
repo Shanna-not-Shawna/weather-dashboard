@@ -131,7 +131,7 @@ function storeFormerSearches(cityInput) {
 }
 
 function displayCityHist(cityHistory) {
-    // searchHistory.innerHTML = "";
+    searchHistory.innerHTML = "";
     console.log(cityHistory);
     for (let i = 0; i < cityHistory.length; i++) {
         var cityList = cityHistory[i];
