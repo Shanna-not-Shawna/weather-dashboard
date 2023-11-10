@@ -24,7 +24,6 @@ function formSubmitHandler(event) {
 // fetch current weather data
 function getCurrentWeather(cityInput) {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=" + APIKey + "&units=imperial";
-    // var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=6acaa70b8159eb647ca2c6424a15fd8f";
     fetch(queryURL)
         .then(function (response) {
             if (response.ok) {
@@ -41,8 +40,6 @@ function getCurrentWeather(cityInput) {
             // Parse latitude and longitude from todaysWeather
             var lat = todaysWeather.coord.lat;
             var lon = todaysWeather.coord.lon;
-            // console.log(lat);
-            // console.log(lon);
 
             getFiveDayWeather(lat, lon);
         })
