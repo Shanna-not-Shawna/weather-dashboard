@@ -33,7 +33,7 @@
 
 #search-history {
     flex: auto;
-    flex-basis: auto;
+    flex-basis: content;
     width: 100%;
     border-style: solid;
     border-color: black;
@@ -42,7 +42,7 @@
 
 #submit-button {
     flex: auto;
-    flex-basis: auto;
+    flex-basis: content;
     background-color: teal;
     width: 100%;
     border-radius: 8px;
