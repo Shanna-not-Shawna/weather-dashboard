@@ -48,6 +48,26 @@ function getCurrentWeather(cityInput) {
         });
 }
 
+// on pageload
+function getDefaultWeather() {
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=Dallas&appid=" + APIKey + "&units=imperial";
+    fetch(queryURL)
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                alert("City not found");
+            }
+        })
+        .then(function (todaysWeather) {
+            console.log(todaysWeather);
+            displayCurrentWeather(todaysWeather);
+        })
+        .catch(function (error) {
+            console.error(error.message);
+        });
+}
+
 //fetch 5 day forecast for entered city
 function getFiveDayWeather(lat, lon) {
     var fiveDayWeatherURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&" + "lon=" + lon + "&appid=" + APIKey + "&units=imperial";
@@ -64,6 +84,9 @@ function getFiveDayWeather(lat, lon) {
 
             var thisDay = dayjs(currentDay);
             forecastContainer[0].innerHTML = "";
+            // var fiveDayTitle = document.createElement("h2");
+            // fiveDayTitle.textContent = "5 day Forecast";
+            // forecastContainer.append(fiveDayTitle);
 
             for (let i = 0; i < fiveDayWeatherData.list.length; i++) {
                 const dayObj = fiveDayWeatherData.list[i];
@@ -78,6 +101,31 @@ function getFiveDayWeather(lat, lon) {
 }
 
 function displayCurrentWeather(todaysWeather) {
+
+    // var sectionTitle = document.createElement("h2");
+    var currentCityDate = document.createElement("h3");
+    var currentTemp = document.createElement("p");
+    var currentWind = document.createElement("p");
+    var currentHumidity = document.createElement("p");
+    let currentIcon = document.createElement("img");
+    currentWeatherContainer.textContent = "";
+    // sectionTitle.textContent = "Current Conditions";
+    // currentWeatherContainer.append(sectionTitle);
+    currentCityDate.textContent = todaysWeather.name + "  (" + currentDay + ")";
+    currentIcon.src = "https://openweathermap.org/img/wn/" + todaysWeather.weather[0].icon + "@2x.png";
+    currentCityDate.append(currentIcon);
+    currentTemp.textContent = "Temp: " + todaysWeather.main.temp + " °F";
+    currentWind.textContent = "Wind: " + todaysWeather.wind.speed + " MPH";
+    currentHumidity.textContent = "Humidity: " + todaysWeather.main.humidity + "%";
+    currentWeatherContainer.append(currentCityDate);
+    currentWeatherContainer.append(currentTemp);
+    currentWeatherContainer.append(currentWind);
+    currentWeatherContainer.append(currentHumidity);
+}
+
+
+// on pageload
+function displayDefaultWeather(todaysWeather) {
 
     var currentCityDate = document.createElement("h3");
     var currentTemp = document.createElement("p");
@@ -152,3 +200,4 @@ function displayHistoryCity (event) {
 
 userCity.addEventListener('submit', formSubmitHandler);
 searchHistory.addEventListener('click', displayHistoryCity)
+document.addEventListener("DOMContentLoaded", displayDefaultWeather);

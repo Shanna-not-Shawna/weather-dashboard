@@ -7,18 +7,17 @@
 }
 
 .form-input {
-    flex: auto;
-    flex-basis: auto;
     width: 100%;
-    display: block;
 }
 
 .currentWeather {
+    background-color: #BBDDFA;
     border-style: solid;
     border-color: black;
     border-width: 1px;
     margin: 8px;
     padding: 15px;
+    border-radius: 4px;
 }
 
 .mb-2 {
@@ -28,19 +27,25 @@
 
 .card {
     color: white;
-    background-color: #00072D;
+    background-color: #141B63;
+    margin: 5px;
+}
+
+.card-body {
+    flex: 1;
+    padding: 5px;
 }
 
 #search-history {
     flex: auto;
     flex-basis: content;
     width: 100%;
-    border-style: solid;
-    border-color: black;
+    border-style: none;
     border-width: 1px;
 }
 
 #submit-button {
+    color: white;
     flex: auto;
     flex-basis: content;
     background-color: teal;
@@ -50,12 +55,32 @@
 }
 
 .city-button {
+    color: #141B63;
     flex: auto;
-    flex-basis: auto;
+    flex-basis: content;
     width: 100%;
     background-color: #E7E7E7;
     display: block;
     border-radius: 8px;
     border-style: none;
-    margin: 1px 1px 1px 1px;
+    margin: 6px 0px 1px 0px;
+}
+
+label {
+    display:block;
+}
+
+.title {
+    background-color: #E7E7E7;
+    margin-top: 8px;
+    padding: 1px 1px 1px 5px;
+}
+
+#forecastContainer {
+    --bs-gutter-x: 0 rem;
+}
+
+.col-3 {
+    flex: 1;
+    width: 100%;
 }
