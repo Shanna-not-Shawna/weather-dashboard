@@ -1,8 +1,24 @@
 .hero {
     background-color: darkblue;
+    background-image: linear-gradient(to right, teal, darkblue);
     text-align: center;
     padding-bottom: 20px;
     padding-top: 20px;
+}
+
+.form-input {
+    flex: auto;
+    flex-basis: auto;
+    width: 100%;
+    display: block;
+}
+
+.currentWeather {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    margin: 8px;
+    padding: 15px;
 }
 
 .mb-2 {
@@ -10,3 +26,36 @@
     margin-top: 15px;
 }
 
+.card {
+    color: white;
+    background-color: #00072D;
+}
+
+#search-history {
+    flex: auto;
+    flex-basis: auto;
+    width: 100%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+#submit-button {
+    flex: auto;
+    flex-basis: auto;
+    background-color: teal;
+    width: 100%;
+    border-radius: 8px;
+    border-style: none;
+}
+
+.city-button {
+    flex: auto;
+    flex-basis: auto;
+    width: 100%;
+    background-color: #E7E7E7;
+    display: block;
+    border-radius: 8px;
+    border-style: none;
+    margin: 1px 1px 1px 1px;
+}

@@ -134,6 +134,7 @@ function displayCityHist(cityHistory) {
         var cityList = cityHistory[i];
         var cityButton = document.createElement("button");
         cityButton.textContent = cityList;
+        cityButton.classList.add("city-button");
 
         cityButton.addEventListener("click", function () {
         });

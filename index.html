@@ -15,20 +15,21 @@
         <h1 class="text-light">Weather Dashboard</h1>
     </header>
     <div class="container row">
-        <div class="col-4">
+        <div class="col-3">
             <form id="search-form" class="mb-2">
-                <label class="form-label" form="input">Search
+                <label class="form-label" form="input"><h3>Search by city:</h3>
                 <input id="submit-city" name="city" class="form-input" type="text" placeholder="Enter city name">
                 </label>
-                <button class="btn btn-secondary btn-block">Submit</button>
+                <br>
+                <button id="submit-button">Submit</button>
             </form>
             <hr>
-            <section class="col-4">
-                <section id="search-history" class="btn btn-secondary btn-block"></section>
+            <section class="col-3">
+                <section id="search-history"></section>
             </section>
         </div>
-        <div class="col-8">
-            <section class="" id="currentWeatherContainer">
+        <div class="col-9">
+            <section class="currentWeather" id="currentWeatherContainer">
 
             </section>
             <section  class="row row-cols-1 row-cols-md-5 g-4"id="forecastContainer">
