@@ -5,7 +5,7 @@ var searchHistory = document.querySelector("#search-history")
 var currentWeatherContainer = document.querySelector("#currentWeatherContainer");
 var forecastContainer = $("#forecastContainer");
 
-
+console.log(dayjs);
 // listens for click and checks for input
 function formSubmitHandler(event) {
     event.preventDefault();
@@ -55,27 +55,28 @@ function getFiveDayWeather(lat, lon) {
     fetch(fiveDayWeatherURL)
         .then(function (response) {
             if (response.ok) {
+                console.log(response);
                 return response.json();
             }
         })
         .then(function (fiveDayWeatherData) {
             console.log(fiveDayWeatherData);
 
+            let dayCounter = 0;
 
             var thisDay = dayjs(currentDay);
             forecastContainer[0].innerHTML = "";
-            // var fiveDayTitle = document.createElement("h2");
-            // fiveDayTitle.textContent = "5 day Forecast";
-            // forecastContainer.append(fiveDayTitle);
 
             for (let i = 0; i < fiveDayWeatherData.list.length; i++) {
                 const dayObj = fiveDayWeatherData.list[i];
-
-                if (dayjs(dayObj.dt_txt).isSame(thisDay.add(1, "day"))) {
+              
+                if (dayjs(dayObj.dt_txt).isSame(thisDay.add(1, "day"), 'day')) {
                     console.log("found next day");
+                    dayCounter ++;
                     displayFiveDayWeather(dayObj);
                     thisDay = dayjs(dayObj.dt_txt);
                 }
+                if (dayCounter === 5) break;
             }
         })
 }
@@ -182,7 +183,6 @@ function getDefaultWeather() {
 
 // Display data from initial page load. Will need to come back and dry this up later.
 function displayDefaultWeather(defaultWeather) {
-    console.log(defaultWeather);
     var currentCityDate = document.createElement("h3");
     var currentTemp = document.createElement("p");
     var currentWind = document.createElement("p");
@@ -214,21 +214,24 @@ function getDefaultFiveDayWeather() {
         .then(function (defaultFiveDayWeatherData) {
             console.log(defaultFiveDayWeatherData);
 
+            let dayCounter = 0;
 
             var thisDay = dayjs(currentDay);
             forecastContainer[0].innerHTML = "";
 
             for (let i = 0; i < defaultFiveDayWeatherData.list.length; i++) {
                 const dayObj = defaultFiveDayWeatherData.list[i];
-
-                if (dayjs(dayObj.dt_txt).isSame(thisDay.add(1, "day"))) {
+              
+                if (dayjs(dayObj.dt_txt).isSame(thisDay.add(1, "day"), 'day')) {
                     console.log("found next day");
+                    dayCounter ++;
                     displayDefaultFiveDayWeather(dayObj);
                     thisDay = dayjs(dayObj.dt_txt);
                 }
-            }
-        })
-}
+                if (dayCounter === 5) break;
+                }
+            })
+        }
 
 // Display data from initial page load. Will need to come back and dry this up later.
 function displayDefaultFiveDayWeather(dayObj) {    
